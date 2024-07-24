@@ -1,21 +1,29 @@
+"use client"
 import Hero from "@/components/Hero";
 import PostCard from "@/components/PostCard";
+import { useEffect, useState } from "react";
 
-export async function fetchPosts() {
-  try {
-    const res = await fetch('http://localhost:3000/api/post', { cache: 'no-store' });
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    return null;
-  }
-}
+export default function Home() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function Home() {
-  const posts = await fetchPosts();
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('/api/post');
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error('Error fetching Posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  console.log('posts',posts);
 
   return (
     <main className="max-w-screen-lg m-auto">

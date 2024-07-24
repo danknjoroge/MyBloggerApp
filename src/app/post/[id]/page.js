@@ -19,7 +19,7 @@ const PostDetails = (ctx) => {
 
     useEffect(() => {
         async function fetchComments() {
-            const res = await fetch(`http://localhost:3000/api/comment/${ctx.params.id}`, { cache: 'no-store' })
+            const res = await fetch(`/api/comment/${ctx.params.id}`, { cache: 'no-store' })
             const comments = await res.json()
             setComments(comments)
         }
@@ -28,7 +28,7 @@ const PostDetails = (ctx) => {
 
     useEffect(() => {
         async function fetchPost() {
-            const res = await fetch(`http://localhost:3000/api/post/${ctx.params.id}`, { cache: 'no-store' })
+            const res = await fetch(`/api/post/${ctx.params.id}`, { cache: 'no-store' })
             const post = await res.json()
             setPostDetails(post)
             setIsLiked(post?.likes?.includes(session?.user?._id))
@@ -41,7 +41,7 @@ const PostDetails = (ctx) => {
         try {
             const confirmModal = confirm("Are you sure you want to delete your post?")
             if (confirmModal) {
-                const res = await fetch(`http://localhost:3000/api/post/${ctx.params.id}`, {
+                const res = await fetch(`/api/post/${ctx.params.id}`, {
                     headers: {
                         'Authorization': `Bearer ${session?.user?.accessToken}`
                     },
@@ -58,7 +58,7 @@ const PostDetails = (ctx) => {
 
     const handleLike = async () => {
         try {
-            const res = await fetch(`http://localhost:3000/api/post/${ctx.params.id}/like`, {
+            const res = await fetch(`/api/post/${ctx.params.id}/like`, {
                 headers: {
                     'Authorization': `Bearer ${session?.user?.accessToken}`
                 },
@@ -98,7 +98,7 @@ const PostDetails = (ctx) => {
                 text: commentText
             }
 
-            const res = await fetch(`http://localhost:3000/api/comment`, {
+            const res = await fetch(`/api/comment`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${session?.user?.accessToken}`
@@ -123,7 +123,7 @@ const PostDetails = (ctx) => {
         try {
             const confirmModal = confirm("Are you sure you want to delete your comment?")
             if (confirmModal) {
-                const res = await fetch(`http://localhost:3000/api/comment/${commentId}`, {
+                const res = await fetch(`/api/comment/${commentId}`, {
                     headers: {
                         'Authorization': `Bearer ${session?.user?.accessToken}`
                     },

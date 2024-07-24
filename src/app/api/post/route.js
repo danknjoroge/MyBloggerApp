@@ -5,13 +5,13 @@ import { verifyJwtToken, verifyToken } from "@/lib/jwt";
 export async function GET(req) {
     await dbConnect();
     try {
-        const posts = await Post.find({}).sort({ createdAt: -1 }).limit(16).populate('authorId');
-        return new Response(JSON.stringify(posts), { status: 200 });
+        const post = await Post.find({}).sort({ createdAt: -1 });
+        return new Response(JSON.stringify(post), { status: 200 });
     } catch (error) {
         console.error('Error fetching posts:', error);
         return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
     }
-}
+  }
 
 
 export async function POST(req) {

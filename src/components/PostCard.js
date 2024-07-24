@@ -22,7 +22,7 @@ const PostCard = ({ post: { title, desc, likes, category, authorId, _id } }) => 
         }
 
         try {
-            const res = await fetch(`http://localhost:3000/api/post/${_id}/like`, {
+            const res = await fetch(`/api/post/${_id}/like`, {
                 headers: {
                     'Authorization': `Bearer ${session.user.accessToken}`
                 },
