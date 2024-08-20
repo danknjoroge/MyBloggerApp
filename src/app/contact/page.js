@@ -124,6 +124,8 @@ const ContactForm = () => {
         toast.error("Failed to send message. Please try again.");
       }
     }
+
+    
   };
 
   return (

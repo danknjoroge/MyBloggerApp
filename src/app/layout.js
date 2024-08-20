@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Login from "@/components/Login";
 
 export const metadata= {
   title: "My Blog ",
@@ -22,11 +23,12 @@ export default function RootLayout({ children }) {
       </head>
       <Provider>
       <body>
+        <Login/>
         <Navbar/>
         {children}
         <ToastContainer 
           position="top-center"
-          autoClose={2000} // Duration before auto-close (in milliseconds)
+          autoClose={1000} // Duration before auto-close (in milliseconds)
           hideProgressBar={false} // Show or hide progress bar
           closeOnClick 
           pauseOnHover

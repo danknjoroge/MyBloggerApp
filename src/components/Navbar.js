@@ -91,21 +91,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <li onClick={closeNav}>
-                <Link
-                  href='/login'
-                  className='px-6 py-2.5 rounded-md bg-primary text-white hover:bg-blue-500 hover:text-white transition-all duration-300'
-                >
-                  Login
-                </Link>
-              </li>
-              <li onClick={closeNav}>
-                <Link href='/register'
-                  className='px-6 py-2.5 rounded-md bg-blue-500 text-white hover:bg-primary hover:text-white transition-all duration-300'
-                >
-                  Register
-                </Link>
-              </li>
+              
             </>
           )}
         </ul>

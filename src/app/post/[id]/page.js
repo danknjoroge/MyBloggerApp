@@ -12,6 +12,7 @@ const PostDetails = (ctx) => {
     const [isLiked, setIsLiked] = useState(false)
     const [postLikes, setPostLikes] = useState(0)
     const [commentText, setCommentText] = useState("")
+    const [commentorEmail, setCommentorEmail] = useState("")
     const [comments, setComments] = useState([])
 
     const { data: session } = useSession()
@@ -81,11 +82,6 @@ const PostDetails = (ctx) => {
     }
 
     const handleComment = async () => {
-        if (!session) {
-            signIn() // Redirect to login if not logged in
-            return
-        }
-
         if (commentText?.length < 2) {
             alert("Comment must be at least 2 characters long")
             return
@@ -94,14 +90,13 @@ const PostDetails = (ctx) => {
         try {
             const body = {
                 postId: ctx.params.id,
-                authorId: session?.user?._id,
-                text: commentText
+                email: commentorEmail,
+                comment: commentText,
             }
 
             const res = await fetch(`/api/comment`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${session?.user?.accessToken}`
                 },
                 method: "POST",
                 body: JSON.stringify(body)
@@ -114,29 +109,36 @@ const PostDetails = (ctx) => {
             })
 
             setCommentText("")
+            setCommentorEmail("")
         } catch (error) {
             console.log(error)
         }
     }
 
-    const handleDeleteComment = async (commentId) => {
+    async function handleSubmit(event) {
+
+        event.preventDefault();
+        const formData = new FormData(event.target)
         try {
-            const confirmModal = confirm("Are you sure you want to delete your comment?")
-            if (confirmModal) {
-                const res = await fetch(`/api/comment/${commentId}`, {
-                    headers: {
-                        'Authorization': `Bearer ${session?.user?.accessToken}`
-                    },
-                    method: "DELETE"
-                })
-                if (res.ok) {
-                    setComments(prev => prev.filter(comment => comment._id !== commentId))
-                }
+  
+            const response = await fetch('/api/sendCommentEmail', {
+                method: 'post',
+                body: formData,
+            });
+            console.log(response)
+            if (!response.ok) {
+                console.log("falling over")
+                throw new Error(`response status: ${response.status}`);
             }
-        } catch (error) {
-            console.log(error)
+            const responseData = await response.json();
+            console.log(responseData['message'])
+    
+            alert('Message successfully sent');
+        } catch (err) {
+            console.error(err);
+            alert("Error, please try resubmitting the form");
         }
-    }
+    };
 
     return (
         <section className="max-w-screen-sm m-auto">
@@ -172,11 +174,21 @@ const PostDetails = (ctx) => {
                 <h2 className='text-center'>Comment Section</h2>
                 <div>
                     <input
+                        onChange={(e) => setCommentorEmail(e.target.value)}
+                        value={commentorEmail}
+                        type='email'
+                        className='w-full focus:outline-none p-2 mt-4'
+                        placeholder='Your email'
+                        required
+                    />
+                </div>
+                <div>
+                    <textarea
                         onChange={(e) => setCommentText(e.target.value)}
                         value={commentText}
-                        type='text'
-                        className='w-full focus:outline-none p-8 mt-4'
+                        className='w-full focus:outline-none p-2 mt-4'
                         placeholder='Leave your comment here...'
+                        required
                     />
                 </div>
                 <div>
@@ -187,22 +199,24 @@ const PostDetails = (ctx) => {
                         Comment
                     </button>
                 </div>
-                <div>
-                    {
-                        comments?.length > 0
-                            ? comments.map((comment) => (
-                                <Comment
-                                    key={comment._id}
-                                    comment={comment}
-                                    setComments={setComments}
-                                    handleDeleteComment={handleDeleteComment}
-                                    session={session}
-                                />
-                            ))
-                            : <h4>Be the first one to leave a comment!</h4>
-                    }
-                </div>
+
             </div>
+
+            <form onSubmit={handleSubmit} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+                <div className="mb-4 flex flex-col w-500">
+
+                    <label htmlFor="form-name">Name </label>
+                    <input id="form-name" autoComplete="name" maxLength={50} size="lg" name="name" className="text-black"/>
+
+                    <label htmlFor="form-email"> Email:</label>
+                    <input id="form-email" required autoComplete="email" maxLength={80} name="email" type="email" className="text-black"/>
+
+                    <label htmlFor="form-message"> Message: </label>
+                    <textarea id="form-message" required name="message" rows={5} className="text-black" />
+
+                </div>
+                <button className=" rounded bg-sky-400" type="submit">Send</button>
+            </form>
         </section>
     )
 }
