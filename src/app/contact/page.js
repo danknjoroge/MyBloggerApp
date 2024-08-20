@@ -95,37 +95,36 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      try {
-        const res = await fetch(`/api/contact`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to submit form");
-        }
-
-        const data = await res.json();
-        toast.success("Message Sent successfully!");
-        router.push('/')
-        // Reset form fields
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-        });
-      } catch (error) {
-        console.error("Error submitting form", error);
-        toast.error("Failed to send message. Please try again.");
-      }
-    }
-
     
+    const formData = new FormData(event.target)
+    if (validate()) {
+        try {
+  
+            const response = await fetch('/api/contactmeEmail', {
+                method: 'post',
+                body: formData,
+            });
+            console.log(response)
+            if (!response.ok) {
+                console.log("falling over")
+                throw new Error(`response status: ${response.status}`);
+            }
+            const responseData = await response.json();
+            console.log(responseData['message'])
+    
+            toast.success("Message Sent successfully!");
+            setFormData({
+              name: "",
+              email: "",
+              subject: "",
+              message: "",
+            });
+          } catch (err) {
+            console.error(err);
+            toast.error("Error, please try resubmitting the form");
+        }
+        
+      }
   };
 
   return (

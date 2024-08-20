@@ -1,6 +1,14 @@
 import { NextResponse } from 'next/server';
 const nodemailer = require('nodemailer');
 
+// Function to convert a string to sentence case
+function toSentenceCase(str) {
+    return str
+        .split(/(?<=\.)\s*|(?<=\.\w)/) // Split on period followed by a space or period followed by a word character
+        .map(sentence => sentence.charAt(0).toUpperCase() + sentence.slice(1).toLowerCase()) // Capitalize the first letter of each sentence
+        .join('. '); // Rejoin the sentences with proper spacing
+}
+
 // Handles POST requests to /api
 export async function POST(request) {
     const provider = process.env.NEXT_PUBLIC_EMAIL_PROVIDER; //set the email provider to either 'outlook' or 'gmail'
@@ -12,7 +20,12 @@ export async function POST(request) {
     const formData = await request.formData();
     const name = formData.get('name');
     const email = formData.get('email');
-    const message = formData.get('message');
+    const messages = formData.get('message');
+    const subjects = formData.get("subject");
+
+    // Convert subject and message to sentence case
+    const subject = toSentenceCase(subjects);
+    const message = toSentenceCase(messages);
 
     // Define transporter configuration based on the provider
     const transporterConfig = provider === 'gmail' ? {
@@ -43,14 +56,13 @@ export async function POST(request) {
             from: username,
             to: myEmail,
             replyTo: email,
-            subject: `New Blog Comment`,
+            subject: subject,
             html: `
                 <p>Hi Daniel,</p>
-                <p>Message: ${message}</p>
+                <p>${message}</p>
                 <h4>FROM:</h4>
                 <p>Name: ${name}</p>
                 <p>Email: ${email}</p>
-
             `,
         });
 

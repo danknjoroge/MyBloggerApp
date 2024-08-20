@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server';
 const nodemailer = require('nodemailer');
+function toSentenceCase(str) {
+    return str
+        .split(/(?<=\.)\s*|(?<=\.\w)/) // Split on period followed by a space or period followed by a word character
+        .map(sentence => sentence.charAt(0).toUpperCase() + sentence.slice(1).toLowerCase()) // Capitalize the first letter of each sentence
+        .join('. '); // Rejoin the sentences with proper spacing
+}
 
 // Handles POST requests to /api
 export async function POST(request) {
@@ -10,9 +16,14 @@ export async function POST(request) {
 
     console.log("dealing with request");
     const formData = await request.formData();
-    const name = formData.get('name');
+    const names = formData.get('name');
     const email = formData.get('email');
-    const message = formData.get('message');
+    const messages = formData.get('message');
+    const blognames =formData.get('blogname');
+
+    const name= toSentenceCase(names);
+    const message = toSentenceCase(messages);
+    const blogname = toSentenceCase(blognames);
 
     // Define transporter configuration based on the provider
     const transporterConfig = provider === 'gmail' ? {
@@ -43,14 +54,13 @@ export async function POST(request) {
             from: username,
             to: myEmail,
             replyTo: email,
-            subject: `New Blog Comment`,
+            subject: `New Blog Comment: ${blogname}`,
             html: `
                 <p>Hi,</p>
                 <p>Message: ${message}</p>
                 <h4>FROM:</h4>
                 <p>Name: ${name}</p>
                 <p>Email: ${email}</p>
-
             `,
         });
 

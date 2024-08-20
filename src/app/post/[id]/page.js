@@ -6,26 +6,18 @@ import { AiFillDelete, AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Comment from '@/components/Comment'
+import { toast } from 'react-toastify'
 
 const PostDetails = (ctx) => {
     const [postDetails, setPostDetails] = useState("")
     const [isLiked, setIsLiked] = useState(false)
     const [postLikes, setPostLikes] = useState(0)
-    const [commentText, setCommentText] = useState("")
-    const [commentorEmail, setCommentorEmail] = useState("")
-    const [comments, setComments] = useState([])
+    const [nameValid, setNameValid] = useState(null)
+    const [emailValid, setEmailValid] = useState(null)
+    const [messageValid, setMessageValid] = useState(null)
 
     const { data: session } = useSession()
     const router = useRouter()
-
-    useEffect(() => {
-        async function fetchComments() {
-            const res = await fetch(`/api/comment/${ctx.params.id}`, { cache: 'no-store' })
-            const comments = await res.json()
-            setComments(comments)
-        }
-        fetchComments()
-    }, [ctx.params.id])
 
     useEffect(() => {
         async function fetchPost() {
@@ -81,62 +73,33 @@ const PostDetails = (ctx) => {
         }
     }
 
-    const handleComment = async () => {
-        if (commentText?.length < 2) {
-            alert("Comment must be at least 2 characters long")
-            return
-        }
+    const validateName = (name) => {
+        setNameValid(name.trim().length > 0);
+    };
 
-        try {
-            const body = {
-                postId: ctx.params.id,
-                email: commentorEmail,
-                comment: commentText,
-            }
+    const validateEmail = (email) => {
+        setEmailValid(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email));
+    };
 
-            const res = await fetch(`/api/comment`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                method: "POST",
-                body: JSON.stringify(body)
-            })
+    const validateMessage = (message) => {
+        setMessageValid(message.trim().length > 0);
+    };
 
-            const newComment = await res.json()
-
-            setComments((prev) => {
-                return [newComment, ...prev]
-            })
-
-            setCommentText("")
-            setCommentorEmail("")
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async function handleSubmit(event) {
-
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target)
         try {
-  
             const response = await fetch('/api/sendCommentEmail', {
                 method: 'post',
                 body: formData,
             });
-            console.log(response)
             if (!response.ok) {
-                console.log("falling over")
                 throw new Error(`response status: ${response.status}`);
             }
-            const responseData = await response.json();
-            console.log(responseData['message'])
-    
-            alert('Message successfully sent');
+            toast.success('Message successfully sent');
         } catch (err) {
             console.error(err);
-            alert("Error, please try resubmitting the form");
+            toast.error("Error, please try resubmitting the form");
         }
     };
 
@@ -171,52 +134,77 @@ const PostDetails = (ctx) => {
                         </div>
                     </div>
                 </div>
-                <h2 className='text-center'>Comment Section</h2>
-                <div>
-                    <input
-                        onChange={(e) => setCommentorEmail(e.target.value)}
-                        value={commentorEmail}
-                        type='email'
-                        className='w-full focus:outline-none p-2 mt-4'
-                        placeholder='Your email'
-                        required
-                    />
-                </div>
-                <div>
-                    <textarea
-                        onChange={(e) => setCommentText(e.target.value)}
-                        value={commentText}
-                        className='w-full focus:outline-none p-2 mt-4'
-                        placeholder='Leave your comment here...'
-                        required
-                    />
-                </div>
-                <div>
-                    <button
-                        onClick={handleComment}
+                <h2 className='font-bold text-center text-xl'>Add Comment</h2>
+                <form onSubmit={handleSubmit} className="mt-8 mb-2 w-full">
+                    <div className="mb-4 flex flex-col w-500">
+                        <input 
+                            id="form-blogname" 
+                            type="hidden" 
+                            autoComplete="blogname" 
+                            maxLength={50} 
+                            size="lg" 
+                            name="blogname" 
+                            className="text-black" 
+                            value={postDetails.title}
+                        />
+
+                        <input 
+                            id="form-name" 
+                            autoComplete="name" 
+                            maxLength={50} 
+                            size="lg" 
+                            name="name" 
+                            className={`w-full focus:outline-none p-2 mt-4 border-2 rounded-md ${
+                                nameValid === null
+                                    ? 'border-gray-300'
+                                    : nameValid
+                                    ? 'border-green-500'
+                                    : 'border-red-500'
+                            }`} 
+                            placeholder='Your Name'
+                            onChange={(e) => validateName(e.target.value)}
+                        />
+                        <input 
+                            id="form-email" 
+                            required 
+                            autoComplete="email" 
+                            maxLength={80} 
+                            name="email" 
+                            type="email" 
+                            placeholder='Your email' 
+                            className={`w-full focus:outline-none p-2 mt-4 border-2 rounded-md ${
+                                emailValid === null
+                                    ? 'border-gray-300'
+                                    : emailValid
+                                    ? 'border-green-500'
+                                    : 'border-red-500'
+                            }`} 
+                            onChange={(e) => validateEmail(e.target.value)}
+                        />
+                        <textarea 
+                            id="form-message" 
+                            required 
+                            name="message" 
+                            rows={5} 
+                            placeholder='Leave Your Comment Here...' 
+                            className={`w-full focus:outline-none p-2 mt-4 border-2 rounded-md ${
+                                messageValid === null
+                                    ? 'border-gray-300'
+                                    : messageValid
+                                    ? 'border-green-500'
+                                    : 'border-red-500'
+                            }`}
+                            onChange={(e) => validateMessage(e.target.value)}
+                        />
+                    </div>
+                    <button 
                         className='px-6 py-2.5 rounded-md bg-primary mt-3 text-white hover:bg-blue-500 hover:text-white transition-all duration-300'
+                        type="submit"
                     >
                         Comment
                     </button>
-                </div>
-
+                </form>
             </div>
-
-            <form onSubmit={handleSubmit} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-                <div className="mb-4 flex flex-col w-500">
-
-                    <label htmlFor="form-name">Name </label>
-                    <input id="form-name" autoComplete="name" maxLength={50} size="lg" name="name" className="text-black"/>
-
-                    <label htmlFor="form-email"> Email:</label>
-                    <input id="form-email" required autoComplete="email" maxLength={80} name="email" type="email" className="text-black"/>
-
-                    <label htmlFor="form-message"> Message: </label>
-                    <textarea id="form-message" required name="message" rows={5} className="text-black" />
-
-                </div>
-                <button className=" rounded bg-sky-400" type="submit">Send</button>
-            </form>
         </section>
     )
 }
