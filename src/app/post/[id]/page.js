@@ -52,15 +52,15 @@ const PostDetails = (ctx) => {
     const handleLike = async () => {
         try {
             const res = await fetch(`/api/post/${ctx.params.id}/like`, {
-                headers: {
-                    'Authorization': `Bearer ${session?.user?.accessToken}`
-                },
+                // headers: {
+                //     'Authorization': `Bearer ${session?.user?.accessToken}`
+                // },
                 method: 'PUT'
             })
             if (res.ok) {
                 if (isLiked) {
                     setIsLiked(false)
-                    setPostLikes(prev => prev - 1)
+                    setPostLikes(prev => prev + 1)
                 } else {
                     setIsLiked(true)
                     setPostLikes(prev => prev + 1)

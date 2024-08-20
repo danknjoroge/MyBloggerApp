@@ -12,7 +12,6 @@ const Post = ({ post: { title, desc, likes, category, authorId, _id } }) => {
     const [isLiked, setIsLiked] = useState(false)
     const [postLikes, setPostLikes] = useState(0)
 
-    console.log('The username is', authorId.username);
     useEffect(() => {
         session && likes && setIsLiked(likes.includes(session?.user?._id))
         session && likes && setPostLikes(likes.length)
@@ -21,17 +20,15 @@ const Post = ({ post: { title, desc, likes, category, authorId, _id } }) => {
       const handleLike = async () => {
         try {
           const res = await fetch(`/api/post/${_id}/like`, {
-            headers: {
-              'Authorization': `Bearer ${session?.user?.accessToken}`
-            },
+            // headers: {
+            //   'Authorization': `Bearer ${session?.user?.accessToken}`
+            // },
             method: 'PUT'
           })
-    
-          console.log(res)
-          if (res.ok) {
+              if (res.ok) {
             if (isLiked) {
               setIsLiked(prev => !prev)
-              setPostLikes(prev => prev - 1)
+              setPostLikes(prev => prev + 1)
             } else {
               setIsLiked(prev => !prev)
               setPostLikes(prev => prev + 1)
