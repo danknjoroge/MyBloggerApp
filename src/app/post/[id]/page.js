@@ -5,8 +5,8 @@ import { BsFillPencilFill } from 'react-icons/bs'
 import { AiFillDelete, AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import Comment from '@/components/Comment'
 import { toast } from 'react-toastify'
+import styles from './post.module.css'
 
 const PostDetails = (ctx) => {
     const [postDetails, setPostDetails] = useState("")
@@ -124,9 +124,10 @@ const PostDetails = (ctx) => {
                             }
                         </div>
                         <span className="text-center py-2 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">{postDetails.category}</span>
-                        <p className="leading-relaxed mb-8">
-                            {postDetails.desc}
-                        </p>
+                        <div className={` ${styles.text} leading-relaxed mb-8`} dangerouslySetInnerHTML={{ __html: `
+      
+      ${postDetails.desc}
+    ` }}></div>
                         <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
                             <span className="text-gray-400 mr-3 inline-flex items-center ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200 cursor-pointer">
                                 {postLikes} {" "} {isLiked ? <AiFillLike size={16} onClick={handleLike} /> : <AiOutlineLike size={16} onClick={handleLike} />}
