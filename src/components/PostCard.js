@@ -3,6 +3,8 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai'
+import DOMPurify from "dompurify";
+
 
 const Post = ({ post: { title, desc, likes, category, authorId, _id } }) => {
   const { data: session } = useSession()
@@ -29,7 +31,7 @@ const Post = ({ post: { title, desc, likes, category, authorId, _id } }) => {
   }
 
   // Truncate description if necessary
-  const truncatedDesc = desc.length > 60 ? `${desc.substring(0, 60)}...` : desc
+  const truncatedDesc = desc.length > 100 ? `${desc.substring(0, 100)}...` : desc
 
   return (
     <section className="text-gray-600 body-font overflow-hidden">
@@ -38,7 +40,7 @@ const Post = ({ post: { title, desc, likes, category, authorId, _id } }) => {
           <div className="p-12 flex flex-col items-start w-full">
             <span className="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">{category}</span>
             <h2 className="sm:text-3xl text-2xl title-font font-medium text-gray-900 mt-4 mb-4">{title}</h2>
-            <div className="leading-relaxed mb-8 w-full" dangerouslySetInnerHTML={{ __html: truncatedDesc }} />
+            <div className="leading-relaxed mb-8 w-full" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(truncatedDesc) }} />
             <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
               <Link href={`/post/${_id}`} className="text-indigo-500 inline-flex items-center">See More
               </Link>
