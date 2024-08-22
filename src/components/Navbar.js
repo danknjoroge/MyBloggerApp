@@ -37,8 +37,8 @@ const Navbar = () => {
         )}
       </div>
       <nav className={`${navIsVisible ? "right-0" : "right-full"}
-        transition-all duration-300 mt-[56px] lg:mt-0 bg-primary align-bottom lg:bg-transparent flex flex-col w-full lg:w-auto lg:flex-row justify-center lg:justify-end fixed top-0 bottom-0 -right-full lg:static flex gap-x-9 items-center`}>
-        <ul className='gap-y-5 items-center flex gap-x-5 flex flex-col lg:flex-row font-semibold lg:justify-end lg:w-full'>
+        transition-all duration-300 mt-[56px] lg:mt-0 bg-primary align-bottom lg:bg-transparent flex-col w-full lg:w-auto lg:flex-row justify-center lg:justify-end fixed top-0 bottom-0 -right-full lg:static flex gap-x-9 items-center`}>
+        <ul className='gap-y-5 items-center flex gap-x-5 flex-col lg:flex-row font-semibold lg:justify-end lg:w-full'>
           <li onClick={closeNav}>
             <Link className='text-orange-300 text-2xl font-bold hover:bg-orange-700 p-2 border-md hover:text-white transition-all duration-300' href={'/'}>
               Home
@@ -59,7 +59,7 @@ const Navbar = () => {
               {session.user.email === process.env.NEXT_PUBLIC_AUTHENTICATED_EMAIL && (
                 <>
                   <li onClick={closeNav}>
-                    <Link className='text-orange-300 text-2xl font-bold hover:bg-orange-700 p-2 border-md hover:text-white transition-all duration-300' href={'/messages'}>
+                    <Link className='text-orange-300 text-2xl font-bold hover:bg-orange-700 p-2 border-md hover:text-white transition-all duration-300' href={'/categories'}>
                       Messages
                     </Link>
                   </li>
@@ -71,14 +71,14 @@ const Navbar = () => {
                       Create Post
                     </Link>
                   </li>
-                  {/* <li onClick={closeNav}>
+                  <li onClick={closeNav}>
                     <Link
                       href='/categories'
                       className='px-6 py-2.5 rounded-md bg-primary text-white hover:bg-indigo-50 hover:text-indigo-500 transition-all duration-300'
                     >
                       Add Category
                     </Link>
-                  </li> */}
+                  </li>
                 </>
               )}
               <li>

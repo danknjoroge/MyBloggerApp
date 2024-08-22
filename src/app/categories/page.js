@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react'
+import { toast } from 'react-toastify';
 
 
 const AddCategory = () => {
@@ -34,9 +35,11 @@ const AddCategory = () => {
         throw new Error("Error occured")
       }
   
-      const post = await res.json()  
+      const post = await res.json() 
+      toast.success("Category Added Successfully") 
       router.push(`/create-post`)
     } catch (error) {
+      toast.error("Category Already Exist.")
         console.log(error)
     }
   }

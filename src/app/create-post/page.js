@@ -46,9 +46,11 @@ const Createpost = () => {
             }
   
             const post = await res.json()
-  
+        toast.success("Post Created Successfully.")
             router.push(`/`)
         } catch (error) {
+            toast.error("Error Creating The Post. Please Try Again")
+
             console.log(error)
         }
     }
