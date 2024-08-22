@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -10,10 +10,29 @@ import { toast } from 'react-toastify'
 const Createpost = () => {
     const [title, setTitle] = useState('')
     const [desc, setDesc] = useState('')
-    const [category, setCategory] = useState("Sports")
-  
+    const [category, setCategory] = useState("Select")
     const { data: session, status } = useSession()
     const router = useRouter()
+    const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/category');
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  
   
     if (status === 'loading') {
         return <p className='text-center text-5xl'>Loading...</p>
@@ -26,10 +45,11 @@ const Createpost = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
   
-        if(!title || !category || !desc){
-            toast.error("All fields are required")
-            return
-        }
+        if (category === "Select" || !title || !desc) {
+        toast.error("All fields are required")
+        return
+}
+
   
         try {
             const res = await fetch(`/api/post`, {
@@ -39,15 +59,21 @@ const Createpost = () => {
                 },
                 method: 'POST',
                 body: JSON.stringify({title,desc,category,authorId: session?.user?._id})
+               
+                
             })
   
             if(!res.ok){
-                throw new Error("Error occurred")
+                const errorData = await res.json(); 
+            console.error('Error Response:', errorData);
+            throw new Error(`Error occurred: ${errorData.message || res.statusText}`);
+                
             }
   
             const post = await res.json()
         toast.success("Post Created Successfully.")
-            router.push(`/`)
+
+        router.push(`/`)
         } catch (error) {
             toast.error("Error Creating The Post. Please Try Again")
 
@@ -81,20 +107,22 @@ const Createpost = () => {
                     />
                 </div>
                 <div>
-                    <select 
-                        value={category} 
-                        onChange={(e) => setCategory(e.target.value)}  
-                        className='w-full focus:outline-none p-2 mt-4'
-                    >
-                        <option value='Sports'>Sports</option>
-                        <option value='Money'>Money</option>
-                        <option value='News'>News</option>
-                        <option value='Tech'>Tech</option>
-                        <option value='Programming'>Programming</option>
-                    </select>
+                <select 
+                    value={category} 
+                    onChange={(e) => setCategory(e.target.value)}  
+                    className='w-full focus:outline-none p-2 mt-4'
+                    required
+                >
+                    <option value="Select" disabled>Select a Category</option>
+                    {categories.map(data => (
+                        <option key={data._id} value={data.name}>{data.name}</option>
+                    ))}
+                </select>
+
                 </div>
                 <button
                     type='submit'
+                    disabled={loading}
                     className='px-6 py-2.5 rounded-md bg-primary mt-3 text-white hover:bg-blue-500 hover:text-white transition-all duration-300'
                 >
                     Post

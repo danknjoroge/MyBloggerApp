@@ -10,7 +10,7 @@ const AddCategory = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const router = useRouter();
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
 
   const handleSubmit = async (e) => {
     e.preventDefault()

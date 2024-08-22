@@ -14,14 +14,7 @@ const PostSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: [
-            'Sports',
-            'Money',
-            'News',
-            'Tech',
-            'Programming',
-        ]
-    },
+        },
     authorId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

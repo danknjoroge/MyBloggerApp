@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import dbConnect from "@/lib/db";
 import Category from "@/models/Category";
-import Post from "@/models/Post";
 import { verifyJwtToken } from '@/lib/jwt';
 
 export async function GET(req) {

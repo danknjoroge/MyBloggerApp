@@ -58,11 +58,11 @@ const Navbar = () => {
             <>
               {session.user.email === process.env.NEXT_PUBLIC_AUTHENTICATED_EMAIL && (
                 <>
-                  <li onClick={closeNav}>
+                  {/* <li onClick={closeNav}>
                     <Link className='text-orange-300 text-2xl font-bold hover:bg-orange-700 p-2 border-md hover:text-white transition-all duration-300' href={'/categories'}>
                       Messages
                     </Link>
-                  </li>
+                  </li> */}
                   <li onClick={closeNav}>
                     <Link
                       href='/create-post'

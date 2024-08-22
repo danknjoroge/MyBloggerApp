@@ -12,7 +12,9 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 const Edit = (ctx) => {
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
-    const [category, setCategory] = useState("Nature")
+    const [category, setCategory] = useState("")
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true)
     const { data: session, status } = useSession()
     const router = useRouter()
 
@@ -26,6 +28,19 @@ const Edit = (ctx) => {
             setDesc(post.desc)
             setCategory(post.category)
         }
+        const fetchCategories = async () => {
+            try {
+              const response = await fetch('/api/category');
+              const data = await response.json();
+              setCategories(data);
+            } catch (error) {
+              console.error('Error fetching categories:', error);
+            } finally {
+              setLoading(false);
+            }
+          };
+      
+          fetchCategories();
         fetchPost()
     }, [])
 
@@ -95,18 +110,17 @@ const Edit = (ctx) => {
                     />
                 </div>
                 <div className="mt-4">
-                    <select 
-                        value={category} 
-                        onChange={(e) => setCategory(e.target.value)} 
-                        className='w-full focus:outline-none p-2'
-                    >
-                        <option>Categories</option>
-                        <option value='Sports'>Sports</option>
-                        <option value='Money'>Money</option>
-                        <option value='News'>News</option>
-                        <option value='Tech'>Tech</option>
-                        <option value='Programming'>Programming</option>
-                    </select>
+                <select 
+                    value={category} 
+                    onChange={(e) => setCategory(e.target.value)}  
+                    className='w-full focus:outline-none p-2 mt-4'
+                    required
+                >
+                    {categories.map(data => (
+                        <option key={data._id} value={data.name}>{data.name}</option>
+                    ))}
+                </select>
+
                 </div>
                 <div className="mt-3">
                     <button
