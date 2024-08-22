@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useRef  } from 'react'
 import { useSession, signIn } from 'next-auth/react'
 import { BsFillPencilFill } from 'react-icons/bs'
 import { AiFillDelete, AiFillLike, AiOutlineLike } from 'react-icons/ai'
@@ -19,6 +19,7 @@ const PostDetails = (ctx) => {
 
     const { data: session } = useSession()
     const router = useRouter()
+    const formRef = useRef(null);
 
     useEffect(() => {
         async function fetchPost() {
@@ -98,6 +99,7 @@ const PostDetails = (ctx) => {
                 throw new Error(`response status: ${response.status}`);
             }
             toast.success('Message successfully sent');
+            formRef.current.reset();
         } catch (err) {
             console.error(err);
             toast.error("Error, please try resubmitting the form");
@@ -134,7 +136,7 @@ const PostDetails = (ctx) => {
                     </div>
                 </div>
                 <h2 className='font-bold text-center text-xl'>Add Comment</h2>
-                <form onSubmit={handleSubmit} className="mt-8 mb-2 w-full">
+                <form ref={formRef} onSubmit={handleSubmit} className="mt-8 mb-2 w-full">
                     <div className="mb-4 flex flex-col w-500">
                         <input 
                             id="form-blogname" 
