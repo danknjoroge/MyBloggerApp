@@ -40,9 +40,9 @@ const Edit = (ctx) => {
             }
           };
       
-          fetchCategories();
+        fetchCategories();
         fetchPost()
-    }, [])
+    }, [ctx.params.id])
 
     if (status === 'loading') {
         return <p>Loading...</p>

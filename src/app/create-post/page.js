@@ -1,20 +1,20 @@
 'use client'
-
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { toast } from 'react-toastify'
+import dynamic from 'next/dynamic';
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-const Createpost = () => {
+const CreatePost = () => {
     const [title, setTitle] = useState('')
     const [desc, setDesc] = useState('')
     const [category, setCategory] = useState("Select")
     const { data: session, status } = useSession()
     const router = useRouter()
     const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -132,4 +132,4 @@ const Createpost = () => {
     )
 }
 
-export default Createpost
+export default CreatePost
