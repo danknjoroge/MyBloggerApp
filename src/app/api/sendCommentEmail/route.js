@@ -57,7 +57,7 @@ export async function POST(request) {
             subject: `New Blog Comment: ${blogname}`,
             html: `
                 <p>Hi,</p>
-                <p>Message: ${message}</p>
+                <p>${message}</p>
                 <h4>FROM:</h4>
                 <p>Name: ${name}</p>
                 <p>Email: ${email}</p>

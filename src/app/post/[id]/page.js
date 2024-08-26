@@ -110,7 +110,7 @@ const PostDetails = (ctx) => {
         <section className="max-w-screen-sm m-auto">
             <div className="container px-5 py-12 mx-auto">
                 <div className="flex flex-wrap -m-12">
-                    <div className="p-12 flex flex-col">
+                    <div className="p-12 flex flex-col w-full">
                         <h2 className="sm:text-3xl text-xl title-font font-medium text-gray-900 mt-4 mb-4 text-center">{postDetails.title}</h2>
                         <div className="flex items-center justify-center mt-4 gap-x-5 pt-4 pb-5">
                             {
