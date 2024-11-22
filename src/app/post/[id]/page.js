@@ -112,6 +112,7 @@ const PostDetails = (ctx) => {
                 <div className="flex flex-wrap -m-12">
                     <div className="p-12 flex flex-col w-full">
                         <h2 className="sm:text-3xl text-xl title-font font-medium text-gray-900 mt-4 mb-4 text-center">{postDetails.title}</h2>
+                       {session &&
                         <div className="flex items-center justify-center mt-4 gap-x-5 pt-4 pb-5">
                             {
                                 session && postDetails?.authorId?._id.toString() === session?.user?._id.toString() && (
@@ -125,7 +126,8 @@ const PostDetails = (ctx) => {
                                     </>
                                 )
                             }
-                        </div>
+                        </div> 
+                        }
                         <span className="text-center py-2 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">{postDetails.category}</span>
                         <div className={` ${styles.text} leading-relaxed mb-8`} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(postDetails.desc) }}></div>
                         <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">

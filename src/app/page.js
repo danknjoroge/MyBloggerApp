@@ -9,6 +9,7 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -40,10 +41,10 @@ export default function Home() {
   return (
     <main className="max-w-screen-lg m-auto">
       <Hero />
-      <div className="flex flex-row p-2 rounded-md gap-4 items-center border border-gray-400 w-fit ml-6">
+      <div className="flex flex-row p-1 pl-2 rounded-md gap-4 items-center border border-gray-400 w-fit ml-6">
         <input 
           type="text" 
-          placeholder="Enter search Keyword" 
+          placeholder="Search by Category or Title"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           className="outline-none"

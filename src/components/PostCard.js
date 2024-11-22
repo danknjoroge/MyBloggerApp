@@ -6,10 +6,14 @@ import { AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import DOMPurify from "dompurify";
 
 
-const Post = ({ post: { title, desc, likes, category, authorId, _id } }) => {
+const Post = ({ post: { title, desc, likes, category, authorId, _id, updatedAt } }) => {
   const { data: session } = useSession()
   const [isLiked, setIsLiked] = useState(false)
   const [postLikes, setPostLikes] = useState(0)
+  const dateObject = new Date(updatedAt);
+  const datePart = dateObject.toLocaleDateString();
+  const timePart = dateObject.toLocaleTimeString(); 
+
 
   useEffect(() => {
     session && likes && setIsLiked(likes.includes(session?.user?._id))
@@ -51,8 +55,8 @@ const Post = ({ post: { title, desc, likes, category, authorId, _id } }) => {
               </span>
             </div>
             <a className="inline-flex items-center">
-              <span className="flex-grow flex flex-col pl-4">
-                <span className="title-font font-medium text-gray-900">Author: {authorId?.username}</span>
+              <span className="flex-grow flex flex-col ">
+                <span className="title-font font-medium text-gray-500">Updated On: {datePart}</span>
               </span>
             </a>
           </div>
