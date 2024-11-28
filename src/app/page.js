@@ -3,7 +3,6 @@ import Hero from "@/components/Hero";
 import PostCard from "@/components/PostCard";
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import styles from './page.module.css';
 
 export default function Home() {
   const [posts, setPosts] = useState([]);

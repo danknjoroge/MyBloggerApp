@@ -20,7 +20,7 @@ const Navbar = () => {
     <header className='container mx-auto px-5 flex justify-between py-4 items-center z-50'>
       <div>
         <Link href={'/'} className='text-primary text-3xl font-bold  p-2 border-md transition-all duration-300'>
-        MAJIRANI WORLD
+        MAJIRANI EXPERIENCE
         </Link>
       </div>
       <div className="lg:hidden z-50">
