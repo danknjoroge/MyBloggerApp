@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React from "react";
 
 const Hero = () => {
@@ -11,8 +10,7 @@ const Hero = () => {
               THE MAJIRANI EXPERIENCE
             </h1>
             <h2 className="w-full max-w-2xl py-4 mx-auto text-xl font-light text-center text-gray-500">
-              A Place to come and share your thoughts, ideas, and meet new
-              friends. Have a look around and tell us what you think!
+              A place to learn and explore different ideas across various disciplines. Have a look around and tell us what you think!
             </h2>
           </div>
         </div>

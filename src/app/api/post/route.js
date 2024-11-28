@@ -4,9 +4,23 @@ import { verifyJwtToken, verifyToken } from "@/lib/jwt";
 
 export async function GET(req) {
   await dbConnect();
+
+  const { searchParams } = new URL(req.url);
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "10");
+  const skip = (page - 1) * limit;
+
   try {
-    const post = await Post.find({}).sort({ createdAt: -1 });
-    return new Response(JSON.stringify(post), { status: 200 });
+    const posts = await Post.find({})
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalPosts = await Post.countDocuments();
+    return new Response(
+      JSON.stringify({ posts, totalPages: Math.ceil(totalPosts / limit) }),
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching posts:", error);
     return new Response(JSON.stringify({ error: "Internal Server Error" }), {
@@ -14,6 +28,7 @@ export async function GET(req) {
     });
   }
 }
+
 
 export async function POST(req) {
   await dbConnect();
