@@ -18,9 +18,10 @@ const Navbar = () => {
 
   return (
     <header className='container mx-auto px-5 flex justify-between py-4 items-center z-50'>
-      <div>
-        <Link href={'/'} className='text-primary text-3xl font-bold  p-2 border-md transition-all duration-300'>
-        MAJIRANI EXPERIENCE
+      <div className='flex items-center gap-x-2 lg:gap-x- lg:flex-row'>
+        <img src='/logo.png' alt='logo' className='w-10 h-10 lg:w-12 lg:h-12' />
+        <Link href={'/'} className='text-primary text-xl font-bold  p-2 border-md transition-all duration-300'>
+        THE MAJIRANI EXPERIENCE
         </Link>
       </div>
       <div className="lg:hidden z-50">
@@ -58,11 +59,6 @@ const Navbar = () => {
             <>
               {session.user.email === process.env.NEXT_PUBLIC_AUTHENTICATED_EMAIL && (
                 <>
-                  {/* <li onClick={closeNav}>
-                    <Link className='text-orange-300 text-2xl font-bold hover:bg-orange-700 p-2 border-md hover:text-white transition-all duration-300' href={'/categories'}>
-                      Messages
-                    </Link>
-                  </li> */}
                   <li onClick={closeNav}>
                     <Link
                       href='/create-post'

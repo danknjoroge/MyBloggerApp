@@ -1,57 +1,61 @@
-'use client';
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react'
-import { toast } from 'react-toastify';
-
+"use client";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const AddCategory = () => {
-  const [name, setName] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const router = useRouter();
   const { data: session, status } = useSession();
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-  
-    if(!name){
-        toast.error("All fields are required")
-        return
+    e.preventDefault();
+
+    if (!name) {
+      toast.error("All fields are required");
+      return;
     }
-  
+
     try {
-      
       const res = await fetch(`/api/category`, {
         headers: {
-           'Content-Type': 'application/json',
-           'Authorization': `Bearer ${session?.user?.accessToken}` 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.user?.accessToken}`,
         },
-        method: 'POST',
-        body: JSON.stringify({name})
-      })
-  
-      if(!res.ok){
-        throw new Error("Error occured")
+        method: "POST",
+        body: JSON.stringify({ name }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Error occured");
       }
-  
-      const post = await res.json() 
-      toast.success("Category Added Successfully") 
-      router.push(`/create-post`)
+
+      const post = await res.json();
+      toast.success("Category Added Successfully");
+      router.push(`/create-post`);
     } catch (error) {
-      toast.error("Category Already Exist.")
-        console.log(error)
+      toast.error("Category Already Exist.");
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Add New Category</h1>
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      >
         {error && <p className="text-red-500">{error}</p>}
         {success && <p className="text-green-500">{success}</p>}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="name"
+          >
             Category Name
           </label>
           <input
