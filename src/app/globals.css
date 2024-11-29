@@ -2,10 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400&family=Fauna+One&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+
 
 body{
-  font-family: 'Cinzel';
+  font-family:'Roboto', sans-serif;
   overflow-x: hidden;
 }
 
