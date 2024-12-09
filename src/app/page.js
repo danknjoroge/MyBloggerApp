@@ -63,7 +63,7 @@ export default function Home() {
           placeholder="Search by Category or Title"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="outline-none"
+          className="outline-none w-fit"
         />
         <CiSearch size={20} />
       </div>
