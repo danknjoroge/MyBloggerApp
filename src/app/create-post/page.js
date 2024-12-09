@@ -37,6 +37,7 @@ const CreatePost = () => {
   }
 
   if (status === "unauthenticated") {
+    router.push("/");
     return <p>Access Denied</p>;
   }
 

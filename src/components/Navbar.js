@@ -41,17 +41,17 @@ const Navbar = () => {
         transition-all duration-300 mt-[56px] lg:mt-0 bg-primary align-bottom lg:bg-transparent flex-col w-full lg:w-auto lg:flex-row justify-center lg:justify-end fixed top-0 bottom-0 -right-full lg:static flex gap-x-9 items-center`}>
         <ul className='gap-y-5 items-center flex gap-x-5 flex-col lg:flex-row font-semibold lg:justify-end lg:w-full'>
           <li onClick={closeNav}>
-            <Link className='text-orange-300 text-2xl font-bold hover:bg-orange-700 p-2 border-md hover:text-white transition-all duration-300' href={'/'}>
+            <Link className='text-orange-300 text-2xl font-bold  p-2 border-md hover:text-orange-700 transition-all duration-300' href={'/'}>
               Home
             </Link>
           </li>
           <li onClick={closeNav}>
-            <Link className='text-orange-300 text-2xl font-bold hover:bg-orange-700 p-2 border-md hover:text-white transition-all duration-300' href={'/about'}>
+            <Link className='text-orange-300 text-2xl font-bold  p-2 border-md hover:text-orange-700 transition-all duration-300' href={'/about'}>
               About
             </Link>
           </li>
           <li onClick={closeNav}>
-            <Link className='text-orange-300 text-2xl font-bold hover:bg-orange-700 p-2 border-md hover:text-white transition-all duration-300' href={'/contact'}>
+            <Link className='text-orange-300 text-2xl font-bold  p-2 border-md hover:text-orange-700 transition-all duration-300' href={'/contact'}>
               Contact
             </Link>
           </li>
